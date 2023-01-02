@@ -1,7 +1,25 @@
 {
-	"name": "ddrop",
-	"version": "0.0.1",
-	"private": true,
+	"name": "boilerplate",
+	"version": "1.0.0",
+	"description": "Boilerpalte for Sveltekit-Apps with Sveltekit-i18n, TailwindCSS, Typescript, ESLint, Prettier, Svelte-Check, Svelte-Preprocess, Sveltekit-I18n, Vite, Playwright, Vitest and Svelte-Kit-Adapter-Auto.",
+	"author": "Daniel Gaiduk",
+	"license": "MIT",
+	"keywords": [
+		"svelte",
+		"sveltekit",
+		"boilerplate",
+		"tailwindcss",
+		"typescript",
+		"eslint",
+		"prettier",
+		"svelte-check",
+		"svelte-preprocess",
+		"sveltekit-i18n",
+		"vite",
+		"playwright",
+		"vitest",
+		"svelte-kit-adapter-auto"
+	],
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
