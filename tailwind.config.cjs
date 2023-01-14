@@ -8,6 +8,7 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 /** @type {import('tailwindcss').Config} */
 const config = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
+	darkMode: 'dark-theme',
 	theme: {
 		extend: {
 			fontFamily: {
