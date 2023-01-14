@@ -12,6 +12,12 @@ const config = {
 		})
 	],
 	kit: {
+		files: {
+			hooks: {
+				client: 'src/hooks/client',
+				server: 'src/hooks/server'
+			}
+		},
 		adapter: adapter()
 	}
 }
