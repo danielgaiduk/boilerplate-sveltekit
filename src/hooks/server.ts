@@ -1,51 +1,33 @@
 import PocketBase from 'pocketbase'
-import { isAvailableLocale, getPreferredLocale, serializeNonPOJOs } from '$lib/utils'
-import { PATH_EXCEPTIONS, DEFAULT_THEME, POCKETBASE_URL } from '$lib/config'
+import { getURLFragments, setupPocketbase } from '$lib/utils'
+import { DEFAULT_THEME, POCKETBASE_URL } from '$lib/config'
 
 import type { Handle } from '@sveltejs/kit'
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const { locals, request, url, cookies } = event
-	const [locale, ...params] = url.pathname?.substring(1)?.split('/') || []
 
-	const isProbablyLocale = locale && locale.length === 2
-	const isValidLocale = locale && isAvailableLocale(locale)
-	const isException = PATH_EXCEPTIONS.includes(locale)
+	const { locale, location, isValid } = getURLFragments(url, request)
 
-	if (!isException && !isValidLocale) {
-		const preferredLocale = getPreferredLocale(request)
-		const locationFragment = `${!isProbablyLocale ? `${locale}/` : ''}`
-		const locationParams = `${params.join('/')}`
-		const location = `/${preferredLocale}/${locationFragment}${locationParams}`
-
+	if (!isValid) {
 		return new Response(null, {
 			status: 302,
 			headers: { Location: location }
 		})
 	}
 
-	const pocketbase = new PocketBase(POCKETBASE_URL)
-	pocketbase.authStore.loadFromCookie(request.headers.get('cookie') || '')
-
-	try {
-		if (pocketbase.authStore.isValid) {
-			await pocketbase.collection('users').authRefresh()
-		}
-	} catch (_) {
-		pocketbase.authStore.clear()
-	}
+	const pocketbase = await setupPocketbase(POCKETBASE_URL, request)
 
 	locals.locale = locale
 	locals.pocketbase = pocketbase
-	locals.user = serializeNonPOJOs(pocketbase.authStore.model)
 
 	const theme = cookies.get('theme') || DEFAULT_THEME
 
 	const resolveOptions = {
 		transformPageChunk: ({ html }: { html: string }) => {
-			let _html = ''
-			_html = html.replace('%lang%', locale)
-			_html = html.replace('%theme%', theme)
+			let _html = html
+			_html = _html.replace('%lang%', locale)
+			_html = _html.replace('%theme%', theme)
 			return _html
 		}
 	}

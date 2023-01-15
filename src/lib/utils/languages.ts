@@ -1,4 +1,6 @@
-import { LOCALES, DEFAULT_LOCALE } from '$lib/config'
+import { LOCALES, DEFAULT_LOCALE, PATH_EXCEPTIONS } from '$lib/config'
+
+import type { IURLFragments, IUrlCollection } from '$lib/models'
 
 /**
  * Parses the Accept-Language header and returns the language code
@@ -50,4 +52,80 @@ function getPreferredLocale(request: Request): string {
 	return isPrefferedLocaleAvailable ? preferredLocale : DEFAULT_LOCALE
 }
 
-export { parseAcceptLanguage, isAvailableLocale, getPreferredLocale }
+/**
+ * Gets the locale and the path from the URL
+ * @param {URL} url - The URL object
+ * @returns {[string, string]} - The locale and the path
+ */
+function seperateLocaleFromPath(url: URL): [string, string] {
+	const [locale, ...rest] = url.pathname?.substring(1)?.split('/') || []
+
+	return [locale, rest.join('/')]
+}
+
+/**
+ * Gets the fragments of the URL
+ * @param {URL} url - The URL object
+ * @param {Request} request - The request object
+ * @returns {IURLFragments} - The fragments of the URL
+ */
+function getURLFragments(url: URL, request: Request): IURLFragments {
+	const [locale, rest] = seperateLocaleFromPath(url)
+
+	const isValidLocale = locale && isAvailableLocale(locale)
+	const isProbablyLocale = locale && !isValidLocale && locale.length === 2
+	const isException = locale && PATH_EXCEPTIONS.includes(locale)
+
+	const fragments = {
+		locale,
+		location: url.pathname,
+		isValid: true
+	}
+
+	if (!isException && !isValidLocale) {
+		const preferredLocale = getPreferredLocale(request)
+		const locationFragment = `${!isProbablyLocale ? `${locale}/` : ''}`
+		const location = `/${preferredLocale}/${locationFragment}${rest}`
+
+		fragments.locale = preferredLocale
+		fragments.location = location
+		fragments.isValid = false
+	}
+
+	return fragments
+}
+
+/**
+ * Gets all the locale paths
+ * @param {URL} url - The URL object
+ * @returns {IUrlCollection[]} - The locale paths
+ */
+function getAllLocalePaths(url: URL): IUrlCollection[] {
+	const [, rest] = seperateLocaleFromPath(url)
+
+	const allURLs: IUrlCollection[] = []
+
+	for (const locale of LOCALES) {
+		const newUrl = new URL(url.toString())
+		const restPath = rest?.length > 0 ? `/${rest}` : ''
+
+		newUrl.pathname = `/${locale}${restPath}`
+
+		allURLs.push({
+			locale,
+			isDefault: locale === DEFAULT_LOCALE,
+			url: newUrl.toString()
+		})
+	}
+
+	return allURLs
+}
+
+export {
+	parseAcceptLanguage,
+	isAvailableLocale,
+	getPreferredLocale,
+	getURLFragments,
+	seperateLocaleFromPath,
+	getAllLocalePaths
+}

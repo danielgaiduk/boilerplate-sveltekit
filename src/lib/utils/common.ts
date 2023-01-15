@@ -3,7 +3,7 @@
  * @param {any} obj - The object to serialize
  * @returns {any} - The serialized object
  */
-function serializeNonPOJOs(obj: any): any {
+function serializeNonPOJOs(obj: unknown): unknown {
 	return structuredClone(obj)
 }
 
