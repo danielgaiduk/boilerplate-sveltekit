@@ -1,5 +1,5 @@
-import PocketBase from 'pocketbase'
-import { getURLFragments, setupPocketbase } from '$lib/utils'
+import { setupPocketbase } from '$lib/server'
+import { getURLFragments } from '$lib/utils'
 import { DEFAULT_THEME, POCKETBASE_URL } from '$lib/config'
 
 import type { Handle } from '@sveltejs/kit'
