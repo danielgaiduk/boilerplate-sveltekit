@@ -1,5 +1,5 @@
 import { setupPocketbase } from '$lib/server'
-import { getURLFragments } from '$lib/utils'
+import { getURLFragments, serializeNonPOJOs } from '$lib/utils'
 import { DEFAULT_THEME, POCKETBASE_URL } from '$lib/config'
 
 import type { Handle } from '@sveltejs/kit'
@@ -20,6 +20,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	locals.locale = locale
 	locals.pocketbase = pocketbase
+	locals.user = serializeNonPOJOs(pocketbase.authStore.model)
 
 	const theme = cookies.get('theme') || DEFAULT_THEME
 
