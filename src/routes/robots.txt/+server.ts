@@ -1,5 +1,8 @@
 export const GET = async () => {
-	const text = 'hello'
+	const text = `
+        User-agent: *
+        Allow: /
+    `
 
 	return new Response(String(text))
 }
