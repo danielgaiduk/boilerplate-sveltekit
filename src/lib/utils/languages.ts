@@ -1,6 +1,6 @@
 import { LOCALES, DEFAULT_LOCALE, PATH_EXCEPTIONS } from '$lib/config'
 
-import type { IURLFragments, IUrlCollection } from '$lib/models'
+import type { IUrlFragments, IUrlCollection } from '$lib/models'
 
 /**
  * Parses the Accept-Language header and returns the language code
@@ -67,9 +67,9 @@ function seperateLocaleFromPath(url: URL): [string, string] {
  * Gets the fragments of the URL
  * @param {URL} url - The URL object
  * @param {Request} request - The request object
- * @returns {IURLFragments} - The fragments of the URL
+ * @returns {IUrlFragments} - The fragments of the URL
  */
-function getURLFragments(url: URL, request: Request): IURLFragments {
+function getURLFragments(url: URL, request: Request): IUrlFragments {
 	const [locale, rest] = seperateLocaleFromPath(url)
 
 	const isValidLocale = locale && isAvailableLocale(locale)

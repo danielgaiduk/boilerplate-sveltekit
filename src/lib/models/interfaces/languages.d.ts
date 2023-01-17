@@ -1,4 +1,4 @@
-interface IURLFragments {
+interface IUrlFragments {
 	locale: string
 	location: string
 	isValid: boolean
@@ -10,4 +10,4 @@ interface IUrlCollection {
 	url: string
 }
 
-export { IURLFragments, IUrlCollection }
+export { IUrlFragments, IUrlCollection }
