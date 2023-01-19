@@ -24,12 +24,16 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const theme = cookies.get('theme') || DEFAULT_THEME
 
+	const REPLACE_HTML_SNIPPETS = {
+		'%lang%': locale,
+		'%theme%': theme
+	}
+
 	const resolveOptions = {
 		transformPageChunk: ({ html }: { html: string }) => {
-			let _html = html
-			_html = _html.replace('%lang%', locale)
-			_html = _html.replace('%theme%', theme)
-			return _html
+			return Object.entries(REPLACE_HTML_SNIPPETS).reduce((prev, [key, value]) => {
+				return prev.replace(key, value)
+			}, html)
 		}
 	}
 
