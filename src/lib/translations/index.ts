@@ -17,7 +17,7 @@ for (const locale of LOCALES) {
 }
 
 const config: Config = {
-	fallbackLocale: 'en',
+	fallbackLocale: 'de',
 	loaders
 }
 
