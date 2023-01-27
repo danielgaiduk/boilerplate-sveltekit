@@ -2,4 +2,4 @@
 	import { translate } from '$lib/translations'
 </script>
 
-{$translate('common.title')}
+{$translate('common.app.name')}
