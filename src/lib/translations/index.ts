@@ -1,6 +1,6 @@
 import i18n from 'sveltekit-i18n'
 
-import { LOCALES, LOADERS } from '$lib/config'
+import { LOCALES, LOADERS, DEFAULT_LOCALE } from '$lib/config'
 
 import type { Config } from 'sveltekit-i18n'
 
@@ -17,7 +17,7 @@ for (const locale of LOCALES) {
 }
 
 const config: Config = {
-	fallbackLocale: 'de',
+	fallbackLocale: DEFAULT_LOCALE,
 	loaders
 }
 

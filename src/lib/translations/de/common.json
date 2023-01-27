@@ -1,3 +1,6 @@
 {
-	"title": "Boilerplate DE"
+	"app": {
+		"name": "Meine App",
+		"description": "Meine App Beschreibung"
+	}
 }
