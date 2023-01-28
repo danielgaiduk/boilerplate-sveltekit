@@ -4,8 +4,8 @@ declare namespace App {
 	// interface Error {}
 	interface Locals {
 		locale: string
-		pocketbase: PocketBase.PocketBase
-		user: PocketBase.BaseAuthStore.Model
+		admin: PocketBase
+		user: PocketBase
 	}
 	// interface PageData {}
 	// interface Platform {}

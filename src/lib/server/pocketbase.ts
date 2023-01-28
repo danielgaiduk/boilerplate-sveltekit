@@ -7,18 +7,21 @@ import PocketBase from 'pocketbase'
  * @returns {PocketBase} - The PocketBase instance
  */
 async function setupPocketbase(url: string, request: Request) {
-	const pocketbase = new PocketBase(url)
-	pocketbase.authStore.loadFromCookie(request.headers.get('cookie') || '')
+	const admin = new PocketBase(url)
+	const user = new PocketBase(url)
 
-	try {
-		if (pocketbase.authStore.isValid) {
-			await pocketbase.collection('users').authRefresh()
-		}
-	} catch (_) {
-		pocketbase.authStore.clear()
+	await Promise.all([
+		admin.admins.authWithPassword('', ''),
+		user.authStore.loadFromCookie(request.headers.get('cookie') || '')
+	])
+
+	if (user.authStore.isValid) {
+		await user.collection('users').authRefresh()
+	} else {
+		user.authStore.clear()
 	}
 
-	return pocketbase
+	return { admin, user }
 }
 
 export { setupPocketbase }
