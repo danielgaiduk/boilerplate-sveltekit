@@ -1,6 +1,6 @@
 import { setupPocketbase } from '$lib/server'
 import { getURLFragments } from '$lib/utils'
-import { DEFAULT_THEME, POCKETBASE_URL } from '$lib/config'
+import { DEFAULT_THEME } from '$lib/config'
 
 import type { Handle } from '@sveltejs/kit'
 
@@ -16,7 +16,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		})
 	}
 
-	const { admin, user } = await setupPocketbase(POCKETBASE_URL, request)
+	const [admin, user] = await setupPocketbase(request)
 
 	locals.locale = locale
 	locals.admin = admin
