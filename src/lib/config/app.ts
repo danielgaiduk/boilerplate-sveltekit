@@ -1,9 +1,6 @@
-import { dev } from '$app/environment'
-
-const APP_TITLE = 'common.app.name'
-const APP_DESCRIPTION = 'common.app.description'
+const DEFAULT_TITLE = 'common.app.name'
+const DEFAULT_DESCRIPTION = 'common.app.description'
 const DEFAULT_LOCALE = 'de'
-const DEFAULT_THEME = 'default-theme'
-const POCKETBASE_URL = dev ? 'http://127.0.0.1:8090' : 'http://127.0.0.1:8090'
+const DEFAULT_THEME = ''
 
-export { APP_TITLE, APP_DESCRIPTION, DEFAULT_LOCALE, DEFAULT_THEME, POCKETBASE_URL }
+export { DEFAULT_TITLE, DEFAULT_DESCRIPTION, DEFAULT_LOCALE, DEFAULT_THEME }

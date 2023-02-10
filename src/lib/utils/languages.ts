@@ -34,9 +34,7 @@ function parseAcceptLanguage(headerLanguage: string | null): string | null {
 function isAvailableLocale(locale: string | null): boolean {
 	if (!locale) return false
 
-	const lowerCaseLocale = locale.toLowerCase()
-
-	return LOCALES.includes(lowerCaseLocale)
+	return LOCALES.includes(locale.toLowerCase())
 }
 
 /**

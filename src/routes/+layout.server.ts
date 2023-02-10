@@ -1,7 +1,7 @@
 import type { LayoutServerLoad } from './$types'
 
-const load: LayoutServerLoad = async ({ locals }) => {
-	return { locale: locals.locale }
-}
+const load = (async ({ locals: { locale } }) => {
+	return { locale }
+}) satisfies LayoutServerLoad
 
 export { load }

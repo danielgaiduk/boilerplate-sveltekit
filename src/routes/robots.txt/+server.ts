@@ -1,4 +1,4 @@
-export const GET = async () => {
+const GET = async () => {
 	const text = `
         User-agent: *
         Allow: /
@@ -6,3 +6,5 @@ export const GET = async () => {
 
 	return new Response(String(text))
 }
+
+export { GET }

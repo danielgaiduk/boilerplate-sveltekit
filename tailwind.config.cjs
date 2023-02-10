@@ -2,21 +2,20 @@ const typography = require('@tailwindcss/typography')
 const forms = require('@tailwindcss/forms')
 const ascpectRatio = require('@tailwindcss/aspect-ratio')
 const lineClamp = require('@tailwindcss/line-clamp')
-
-const defaultTheme = require('tailwindcss/defaultTheme')
+const daisyui = require('daisyui')
 
 /** @type {import('tailwindcss').Config} */
 const config = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
-	darkMode: 'dark-theme',
 	theme: {
-		extend: {
-			fontFamily: {
-				inter: ['Inter var', ...defaultTheme.fontFamily.sans]
-			}
+		fontFamily: {
+			inter: ['Inter var']
 		}
 	},
-	plugins: [forms, typography, ascpectRatio, lineClamp]
+	plugins: [forms, typography, ascpectRatio, lineClamp, daisyui],
+	daisyui: {
+		themes: ['light', 'dark']
+	}
 }
 
 module.exports = config
