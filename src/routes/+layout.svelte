@@ -26,7 +26,21 @@
 	title={siteTitle}
 	titleTemplate={`%s | ${defaultTitle}`}
 	{description}
-	canonical={$page.url.origin}
+	canonical={$page.url.href}
+	openGraph={{
+		url: $page.url.href,
+		title: siteTitle,
+		description,
+		site_name: siteTitle,
+		type: 'website'
+	}}
+	twitter={{
+		handle: '@handle',
+		site: '@site',
+		cardType: 'summary',
+		title: siteTitle,
+		description
+	}}
 />
 
 <slot />

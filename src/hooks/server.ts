@@ -4,6 +4,7 @@ import crypto from 'crypto'
 import { setupPocketbase } from '$lib/server'
 import { getURLFragments } from '$lib/utils'
 import { DEFAULT_THEME } from '$lib/config'
+
 import { PUBLIC_SENTRY_DSN } from '$env/static/public'
 
 import type { Handle, HandleServerError } from '@sveltejs/kit'
@@ -15,12 +16,14 @@ Sentry.init({
 
 const handle = (async ({ event, resolve }) => {
 	const { locals, request, url, cookies } = event
-	const { locale, location: Location, isValid } = getURLFragments(url, request)
+	const { locale, location, isValid } = getURLFragments(url, request)
+
+	console.log('teest')
 
 	if (!isValid) {
 		return new Response(null, {
 			status: 302,
-			headers: { Location }
+			headers: { Location: location }
 		})
 	}
 
@@ -44,6 +47,7 @@ const handle = (async ({ event, resolve }) => {
 	}
 
 	const response = await resolve(event, resolveOptions)
+
 	response.headers.append('set-cookie', user.authStore.exportToCookie())
 
 	return response
@@ -56,7 +60,7 @@ const handleError = (({ error, event }) => {
 
 	return {
 		id,
-		message: 'Whoops!'
+		message: 'Internal Server Error!'
 	}
 }) satisfies HandleServerError
 

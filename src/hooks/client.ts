@@ -17,7 +17,7 @@ const handleError = (({ error, event }) => {
 
 	return {
 		id,
-		message: 'Whoops!'
+		message: 'Internal Server Error!'
 	}
 }) satisfies HandleClientError
 
