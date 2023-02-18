@@ -8,7 +8,7 @@ const PATH_EXCEPTIONS = [
 	'favicon-16x16.png',
 	'favicon-32x32.png',
 	'favicon.ico',
-	'site.webmanifest'
+	'manifest.json'
 ]
 
 export { PATH_EXCEPTIONS }

@@ -1,13 +1,12 @@
 {
 	"name": "boilerplate-sveltekit",
 	"version": "1.0.0",
-	"description": "Boilerpalte for Sveltekit-Apps with Pocketbase, Sveltekit-i18n, TailwindCSS, Typescript, ESLint, Prettier, Svelte-Check, Svelte-Preprocess, Sveltekit-I18n, Vite, Playwright, Vitest and Svelte-Kit-Adapter-Auto.",
+	"description": "Boilerpalte for Sveltekit-Apps with Sveltekit-i18n, TailwindCSS, Typescript, ESLint, Prettier, Svelte-Check, Svelte-Preprocess, Sveltekit-I18n, Vite, Playwright, Vitest and Svelte-Kit-Adapter-Auto.",
 	"author": "Daniel Gaiduk",
 	"license": "MIT",
 	"keywords": [
 		"svelte",
 		"sveltekit",
-		"pocketbase",
 		"boilerplate",
 		"tailwindcss",
 		"typescript",
@@ -49,7 +48,6 @@
 		"eslint": "^8.34.0",
 		"eslint-config-prettier": "^8.6.0",
 		"eslint-plugin-svelte3": "^4.0.0",
-		"pocketbase": "^0.10.2",
 		"postcss": "^8.4.21",
 		"postcss-load-config": "^4.0.1",
 		"prettier": "^2.8.4",

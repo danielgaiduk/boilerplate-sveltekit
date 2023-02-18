@@ -1,7 +1,6 @@
 import * as Sentry from '@sentry/node'
 import crypto from 'crypto'
 
-import { setupPocketbase } from '$lib/server'
 import { getURLFragments } from '$lib/utils'
 import { DEFAULT_THEME } from '$lib/config'
 
@@ -18,8 +17,6 @@ const handle = (async ({ event, resolve }) => {
 	const { locals, request, url, cookies } = event
 	const { locale, location, isValid } = getURLFragments(url, request)
 
-	console.log('teest')
-
 	if (!isValid) {
 		return new Response(null, {
 			status: 302,
@@ -27,16 +24,11 @@ const handle = (async ({ event, resolve }) => {
 		})
 	}
 
-	const [admin, user] = await setupPocketbase(request)
-
 	locals.locale = locale
-	locals.admin = admin
-	locals.user = user
 
 	const resolveOptions = {
 		transformPageChunk: ({ html }: { html: string }): string => {
 			const theme = cookies.get('theme') || DEFAULT_THEME
-
 			return Object.entries({
 				'%lang%': locale,
 				'%theme%': theme ? `data-theme="${theme}"` : ''
@@ -46,11 +38,7 @@ const handle = (async ({ event, resolve }) => {
 		}
 	}
 
-	const response = await resolve(event, resolveOptions)
-
-	response.headers.append('set-cookie', user.authStore.exportToCookie())
-
-	return response
+	return await resolve(event, resolveOptions)
 }) satisfies Handle
 
 const handleError = (({ error, event }) => {
