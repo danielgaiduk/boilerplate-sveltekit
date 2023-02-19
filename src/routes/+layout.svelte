@@ -8,12 +8,10 @@
 	import { getAllLocalePaths } from '$lib/utils'
 	import { translate } from '$lib/translations'
 
-	$: paths = getAllLocalePaths($page.url)
-	$: defaultTitle = $translate(DEFAULT_TITLE)
-	$: defaultDescription = $translate(DEFAULT_DESCRIPTION)
-	$: siteTitle = $translate($page.data?.seo?.title)
-	$: siteDescription = $translate($page.data?.seo?.description)
-	$: description = siteDescription || defaultDescription
+	$: ({ data, url } = $page)
+	$: paths = getAllLocalePaths(url)
+	$: title = `${$translate(data?.seo?.title)} | ${$translate(DEFAULT_TITLE)}`
+	$: description = $translate(data?.seo?.description || DEFAULT_DESCRIPTION)
 </script>
 
 <svelte:head>
@@ -23,23 +21,15 @@
 </svelte:head>
 
 <MetaTags
-	title={siteTitle}
-	titleTemplate={`%s | ${defaultTitle}`}
+	{title}
 	{description}
-	canonical={$page.url.href}
+	canonical={url.href}
 	openGraph={{
-		url: $page.url.href,
-		title: siteTitle,
+		title,
 		description,
-		site_name: siteTitle,
-		type: 'website'
-	}}
-	twitter={{
-		handle: '@handle',
-		site: '@site',
-		cardType: 'summary',
-		title: siteTitle,
-		description
+		url: url.href,
+		type: 'website',
+		site_name: title
 	}}
 />
 
