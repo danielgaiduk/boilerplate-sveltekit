@@ -1,5 +1,4 @@
 import * as Sentry from '@sentry/node'
-import crypto from 'crypto'
 
 import { getURLFragments } from '$lib/utils'
 import { DEFAULT_THEME } from '$lib/config'
@@ -15,9 +14,9 @@ Sentry.init({
 
 const handle = (async ({ event, resolve }) => {
 	const { locals, request, url, cookies } = event
-	const { locale, location, isValid } = getURLFragments(url, request)
+	const { locale, location, error } = getURLFragments(url, request)
 
-	if (!isValid) {
+	if (error) {
 		return new Response(null, {
 			status: 302,
 			headers: { Location: location }
@@ -26,28 +25,31 @@ const handle = (async ({ event, resolve }) => {
 
 	locals.locale = locale
 
-	const resolveOptions = {
+	const options = {
 		transformPageChunk: ({ html }: { html: string }): string => {
-			const theme = cookies.get('theme') || DEFAULT_THEME
-			return Object.entries({
-				'%lang%': locale,
-				'%theme%': theme ? `data-theme="${theme}"` : ''
-			}).reduce((prev, [key, value]) => {
-				return prev.replace(key, value)
-			}, html)
+			const sourceTheme = cookies.get('theme') || DEFAULT_THEME
+			const theme = sourceTheme ? `data-theme="${sourceTheme}"` : ''
+
+			const replacements = [
+				{ target: '%lang%', value: locale },
+				{ target: '%theme%', value: theme }
+			]
+
+			for (const { target, value } of replacements) {
+				html = html.replace(target, value)
+			}
+
+			return html
 		}
 	}
 
-	return await resolve(event, resolveOptions)
+	return await resolve(event, options)
 }) satisfies Handle
 
 const handleError = (({ error, event }) => {
-	const id = crypto.randomUUID()
-
-	Sentry.captureException(error, { extra: { event, id } })
+	Sentry.captureException(error, { extra: { event } })
 
 	return {
-		id,
 		message: 'Internal Server Error!'
 	}
 }) satisfies HandleServerError

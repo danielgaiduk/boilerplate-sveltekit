@@ -1,7 +1,7 @@
 interface IUrlFragments {
 	locale: string
 	location: string
-	isValid: boolean
+	error: boolean
 }
 
 interface IUrlCollection {

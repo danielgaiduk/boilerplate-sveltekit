@@ -1,5 +1,4 @@
 import * as Sentry from '@sentry/svelte'
-import crypto from 'crypto'
 
 import { PUBLIC_SENTRY_DSN } from '$env/static/public'
 
@@ -11,12 +10,9 @@ Sentry.init({
 })
 
 const handleError = (({ error, event }) => {
-	const id = crypto.randomUUID()
-
-	Sentry.captureException(error, { extra: { event, id } })
+	Sentry.captureException(error, { extra: { event } })
 
 	return {
-		id,
 		message: 'Internal Server Error!'
 	}
 }) satisfies HandleClientError

@@ -16,6 +16,7 @@ function parseAcceptLanguage(headerLanguage: string | null): string | null {
 	for (const acceptedLanguage of acceptedLanguages) {
 		const [fullLanguage, rating = '1'] = acceptedLanguage.split(';q=')
 		const [language] = fullLanguage.split('-')
+
 		if (language && rating) {
 			filteredLanguages.push({ language, rating: parseFloat(rating) })
 		}
@@ -69,7 +70,6 @@ function seperateLocaleFromPath(url: URL): [string, string] {
  */
 function getURLFragments(url: URL, request: Request): IUrlFragments {
 	const [locale, rest] = seperateLocaleFromPath(url)
-
 	const isValidLocale = locale && isAvailableLocale(locale)
 	const isProbablyLocale = locale && !isValidLocale && locale.length === 2
 	const isException = locale && PATH_EXCEPTIONS.includes(locale)
@@ -77,7 +77,7 @@ function getURLFragments(url: URL, request: Request): IUrlFragments {
 	const fragments = {
 		locale,
 		location: url.pathname,
-		isValid: true
+		error: false
 	}
 
 	if (!isException && !isValidLocale) {
@@ -87,7 +87,7 @@ function getURLFragments(url: URL, request: Request): IUrlFragments {
 
 		fragments.locale = preferredLocale
 		fragments.location = location
-		fragments.isValid = false
+		fragments.error = true
 	}
 
 	return fragments
@@ -100,7 +100,6 @@ function getURLFragments(url: URL, request: Request): IUrlFragments {
  */
 function getAllLocalePaths(url: URL): IUrlCollection[] {
 	const [, rest] = seperateLocaleFromPath(url)
-
 	const allURLs: IUrlCollection[] = []
 
 	for (const locale of LOCALES) {
