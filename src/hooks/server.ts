@@ -19,20 +19,17 @@ const handle = (async ({ event, resolve }) => {
 	if (error) {
 		return new Response(null, {
 			status: 302,
-			headers: { Location: location }
+			headers: { location }
 		})
 	}
 
-	locals.locale = locale
-
 	const options = {
 		transformPageChunk: ({ html }: { html: string }): string => {
-			const sourceTheme = cookies.get('theme') || DEFAULT_THEME
-			const theme = sourceTheme ? `data-theme="${sourceTheme}"` : ''
+			const theme = cookies.get('theme') || DEFAULT_THEME
 
 			const replacements = [
-				{ target: '%lang%', value: locale },
-				{ target: '%theme%', value: theme }
+				{ target: '%lang%', value: locale ? `lang="${locale}"` : '' },
+				{ target: '%theme%', value: theme ? `data-theme="${theme}"` : '' }
 			]
 
 			for (const { target, value } of replacements) {
@@ -42,6 +39,8 @@ const handle = (async ({ event, resolve }) => {
 			return html
 		}
 	}
+
+	locals.locale = locale
 
 	return await resolve(event, options)
 }) satisfies Handle

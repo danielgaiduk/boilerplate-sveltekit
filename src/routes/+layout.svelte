@@ -3,10 +3,10 @@
 
 	import { MetaTags } from 'svelte-meta-tags'
 
-	import { DEFAULT_TITLE, DEFAULT_DESCRIPTION } from '$lib/config'
 	import { page } from '$app/stores'
-	import { getAllLocalePaths } from '$lib/utils'
 	import { translate } from '$lib/translations'
+	import { getAllLocalePaths } from '$lib/utils'
+	import { DEFAULT_TITLE, DEFAULT_DESCRIPTION } from '$lib/config'
 
 	$: ({ data, url } = $page)
 	$: paths = getAllLocalePaths(url)
